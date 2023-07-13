@@ -1,32 +1,28 @@
 package fr.mc2d.authapi;
 
+import fr.mc2d.authapi.utils.AuthProfile;
+
 public class AuthResponse {
 
-    private String username;
-    private String uuid;
-    private String accessToken;
-    private boolean demoEnabled;
+    private final AuthProfile selectedProfile;
+    private final String accessToken;
+    private final String clientToken;
 
-    public AuthResponse(String username, String uuid, String accessToken, boolean demoEnabled) {
-        this.username = username;
-        this.uuid = uuid;
+    public AuthResponse(AuthProfile authProfile, String accessToken, String clientToken) {
+        this.selectedProfile = authProfile;
         this.accessToken = accessToken;
-        this.demoEnabled = demoEnabled;
+        this.clientToken = clientToken;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getUUID() {
-        return uuid;
+    public AuthProfile getSelectedProfile() {
+        return this.selectedProfile;
     }
 
     public String getAccessToken() {
-        return accessToken;
+        return this.accessToken;
     }
 
-    public boolean isDemoEnabled() {
-        return demoEnabled;
+    public String getClientToken() {
+        return this.clientToken;
     }
 }

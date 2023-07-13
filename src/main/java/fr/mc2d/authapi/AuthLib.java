@@ -9,8 +9,22 @@ import java.util.UUID;
 
 public class AuthLib {
 
-    public static JSONObject getDataInAuthentication(String email, String password) {
+    public static JSONObject getDataInAuthentication(String authURL, String email, String password) {
         String jsonData = HttpUtil.sendPostRequest(Authenticator.MC2D_AUTH_URL, Util.makeArgGroup("email", email), Util.makeArgGroup("password", password));
+        JSONObject object;
+
+        try {
+            object = (JSONObject) new JSONParser().parse(jsonData);
+        } catch (Exception e) {
+            object = new JSONObject();
+            object.put("error", e.getMessage());
+        }
+
+        return object;
+    }
+
+    public static JSONObject getDataInAuthentication(String authURL, String clientToken) {
+        String jsonData = HttpUtil.sendPostRequest(authURL, Util.makeArgGroup("clientToken", clientToken));
         JSONObject object;
 
         try {

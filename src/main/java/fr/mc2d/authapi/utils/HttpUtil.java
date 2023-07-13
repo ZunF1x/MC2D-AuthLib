@@ -60,7 +60,10 @@ public class HttpUtil {
 
                 return response.toString();
             }
-        } catch (Exception ignored) {}
+            System.out.println(responseCode);
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
 
         return "{}";
     }
