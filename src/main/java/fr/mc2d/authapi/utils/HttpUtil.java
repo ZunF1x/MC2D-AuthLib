@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 public class HttpUtil {
 
     public static String sendPostRequest(String link, String... args) {
+        String response;
+
         try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -29,7 +31,8 @@ public class HttpUtil {
                 outputStream.flush();
             } catch (Throwable var22) {
                 var8 = var22;
-                throw var22;
+
+                response = "{" + '"' + "error" + '"' + ":" + '"' + var22.getMessage() + '"' + "}";
             } finally {
                 if (outputStream != null) {
                     if (var8 != null) {
@@ -42,32 +45,34 @@ public class HttpUtil {
                         outputStream.close();
                     }
                 }
-
             }
 
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder response = new StringBuilder();
+                StringBuilder resp = new StringBuilder();
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    response.append(line);
+                    resp.append(line);
                 }
 
                 reader.close();
 
-                return response.toString();
+                response = resp.toString();
+            } else {
+                response = "{" + '"' + "error" + '"' + ":" + '"' + "HTTP Error : " + responseCode + '"' + "}";
             }
-            System.out.println(responseCode);
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+        } catch (Exception e) {
+            response = "{" + '"' + "error" + '"' + ":" + '"' + e.getMessage() + '"' + "}";
         }
 
-        return "{}";
+        return response;
     }
 
     public static String sendGetRequest(String link, String... args) {
+        String response;
+
         try {
             StringBuilder getData = new StringBuilder();
             getData.append("?");
@@ -83,19 +88,23 @@ public class HttpUtil {
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder response = new StringBuilder();
+                StringBuilder resp = new StringBuilder();
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    response.append(line);
+                    resp.append(line);
                 }
 
                 reader.close();
 
-                return response.toString();
+                response = resp.toString();
+            } else {
+                response = "{" + '"' + "error" + '"' + ":" + '"' + "HTTP Error : " + responseCode + '"' + "}";
             }
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            response = "{" + '"' + "error" + '"' + ":" + '"' + e.getMessage() + '"' + "}";
+        }
 
-        return "{}";
+        return response;
     }
 }
