@@ -1,5 +1,8 @@
 package fr.mc2d.authapi.utils;
 
+import fr.mc2d.authapi.AuthLib;
+import org.json.simple.JSONObject;
+
 public class AuthProfile {
 
     private final String username;
@@ -22,5 +25,10 @@ public class AuthProfile {
 
     public boolean isDemoEnabled() {
         return this.demoEnabled;
+    }
+
+    public boolean isComplete() {
+        JSONObject obj = AuthLib.getDataFromUUID(this.id);
+        return !obj.containsKey("error") && username != null && !username.isEmpty();
     }
 }
